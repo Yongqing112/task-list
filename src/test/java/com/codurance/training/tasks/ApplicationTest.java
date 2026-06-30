@@ -96,6 +96,56 @@ public final class ApplicationTest {
                 ""
         );
 
+        execute("uncheck 1");
+        execute("uncheck 3");
+        execute("uncheck 5");
+        execute("uncheck 6");
+
+        execute("show");
+        readLines(
+                "secrets",
+                "    [ ] 1: Eat more donuts.",
+                "    [ ] 2: Destroy all humans.",
+                "",
+                "training",
+                "    [ ] 3: Four Elements of Simple Design",
+                "    [ ] 4: SOLID",
+                "    [ ] 5: Coupling and Cohesion",
+                "    [ ] 6: Primitive Obsession",
+                "    [ ] 7: Outside-In TDD",
+                "    [ ] 8: Interaction-Driven Design",
+                ""
+        );
+
+        
+        // Added by Teddy to verify error handling messages
+        execute("add task DDD learn CA.");
+        readLines(
+                "Could not find a project with the name \"DDD\"."
+        );
+
+        execute("check 99");
+        readLines(
+                "Could not find a task with an ID of 99."
+        );
+
+        execute("help");
+        readLines(
+                "Commands:",
+                "  show",
+                "  add project <project name>",
+                "  add task <project name> <task description>",
+                "  check <task ID>",
+                "  uncheck <task ID>",
+                ""
+        );
+
+        execute("not-a-command");
+        readLines(
+                "I don't know what the command \"not-a-command\" is."
+        );
+
+
         execute("quit");
     }
 
