@@ -9,12 +9,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.codurance.training.tasks.entity.Tasks;
 import com.codurance.training.tasks.entity.Task;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
 
-    private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private final Tasks tasks = new Tasks();
     private final BufferedReader in;
     private final PrintWriter out;
 
