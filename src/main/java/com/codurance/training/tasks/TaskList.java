@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.codurance.training.tasks.entity.Task;
+
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
 
