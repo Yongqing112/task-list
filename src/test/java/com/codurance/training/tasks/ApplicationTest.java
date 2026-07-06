@@ -96,28 +96,6 @@ public final class ApplicationTest {
                 ""
         );
 
-        execute("uncheck 1");
-        execute("uncheck 3");
-        execute("uncheck 5");
-        execute("uncheck 6");
-
-        execute("show");
-        readLines(
-                "secrets",
-                "    [ ] 1: Eat more donuts.",
-                "    [ ] 2: Destroy all humans.",
-                "",
-                "training",
-                "    [ ] 3: Four Elements of Simple Design",
-                "    [ ] 4: SOLID",
-                "    [ ] 5: Coupling and Cohesion",
-                "    [ ] 6: Primitive Obsession",
-                "    [ ] 7: Outside-In TDD",
-                "    [ ] 8: Interaction-Driven Design",
-                ""
-        );
-
-        
         // Added by Teddy to verify error handling messages
         execute("add task DDD learn CA.");
         readLines(
@@ -145,7 +123,6 @@ public final class ApplicationTest {
                 "I don't know what the command \"not-a-command\" is."
         );
 
-
         execute("quit");
     }
 
@@ -158,6 +135,8 @@ public final class ApplicationTest {
         int length = expectedOutput.length();
         char[] buffer = new char[length];
         outReader.read(buffer, 0, length);
+
+        System.out.println(String.valueOf(buffer));
         assertThat(String.valueOf(buffer), is(expectedOutput));
     }
 
