@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.codurance.training.tasks.entity.Tasks;
+import com.codurance.training.tasks.entity.Project;
 import com.codurance.training.tasks.entity.ProjectName;
 import com.codurance.training.tasks.entity.Task;
 
@@ -75,9 +76,9 @@ public final class TaskList implements Runnable {
     }
 
     private void show() {
-        for (Map.Entry<ProjectName, List<Task>> project : tasks.entrySet()) {
-            out.println(project.getKey());
-            for (Task task : project.getValue()) {
+        for (Project project : tasks.entrySet()) {
+            out.println(project.getProjectName());
+            for (Task task : project.getTasks()) {
                 out.printf("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
             }
             out.println();
@@ -119,8 +120,8 @@ public final class TaskList implements Runnable {
 
     private void setDone(String idString, boolean done) {
         int id = Integer.parseInt(idString);
-        for (Map.Entry<ProjectName, List<Task>> project : tasks.entrySet()) {
-            for (Task task : project.getValue()) {
+        for (Project project : tasks.entrySet()) {
+            for (Task task : project.getTasks()) {
                 if (task.getId() == id) {
                     task.setDone(done);
                     return;

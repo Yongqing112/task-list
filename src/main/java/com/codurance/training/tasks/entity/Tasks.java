@@ -1,31 +1,33 @@
 package com.codurance.training.tasks.entity;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 public class Tasks {
-    private final Map<ProjectName, List<Task>> tasks;
+    private final List<Project> projects;
 
     public Tasks() {
-        this.tasks = new LinkedHashMap<>();
+        this.projects = new ArrayList<>();
     }
 
-    public Map<ProjectName, List<Task>> getTasks() {
-        return tasks;
+    public List<Project> getProjects() {
+        return projects;
     }
 
-    public Set<Map.Entry<ProjectName, List<Task>>> entrySet() {
-        return tasks.entrySet();
+    public List<Project> entrySet() {
+        return projects;
     }
 
     public void put(ProjectName projectName, List<Task> taskList) {
-        tasks.put(projectName, taskList);
+        projects.add(new Project(projectName, taskList));
     }
 
     public List<Task> get(ProjectName projectName) {
-        return tasks.get(projectName);
+        return projects.stream()
+        .filter(project -> project.getProjectName().equals(projectName))
+        .findFirst()
+        .map(Project::getTasks)
+        .orElse(null);
     }
 
 }
