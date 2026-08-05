@@ -4,10 +4,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ToDoList {
+
+    private final ToDoListId toDoListId;
     private final List<Project> projects;
 
-    public ToDoList() {
+    public ToDoList(ToDoListId toDoListId) {
+        this.toDoListId = toDoListId;
         this.projects = new ArrayList<>();
+    }
+
+    public ToDoListId geToDoListId(){
+        return toDoListId;
     }
 
     public List<Project> getProjects() {

@@ -8,14 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.codurance.training.tasks.entity.ToDoList;
+import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.entity.Project;
 import com.codurance.training.tasks.entity.ProjectName;
 import com.codurance.training.tasks.entity.Task;
+import com.codurance.training.tasks.entity.TaskId;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
 
-    private final ToDoList toDoList = new ToDoList();
+    private final ToDoListId DEFAULT_TO_DO_LIST_ID = ToDoListId.of("001");
+    private final ToDoList toDoList = new ToDoList(DEFAULT_TO_DO_LIST_ID);
     private final BufferedReader in;
     private final PrintWriter out;
 
@@ -78,7 +81,7 @@ public final class TaskList implements Runnable {
         for (Project project : toDoList.getProjects()) {
             out.println(project.getProjectName());
             for (Task task : project.getTasks()) {
-                out.printf("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
+                out.printf("    [%c] %s: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
             }
             out.println();
         }
@@ -106,7 +109,8 @@ public final class TaskList implements Runnable {
             out.println();
             return;
         }
-        projectTasks.add(new Task(nextId(), description, false));
+        TaskId taskId = TaskId.of(nextId());
+        projectTasks.add(new Task(taskId, description, false));
     }
 
     private void check(String idString) {
@@ -118,16 +122,16 @@ public final class TaskList implements Runnable {
     }
 
     private void setDone(String idString, boolean done) {
-        int id = Integer.parseInt(idString);
+        TaskId id = TaskId.of(idString);
         for (Project project : toDoList.getProjects()) {
             for (Task task : project.getTasks()) {
-                if (task.getId() == id) {
+                if (task.getId().equals(id)) {
                     task.setDone(done);
                     return;
                 }
             }
         }
-        out.printf("Could not find a task with an ID of %d.", id);
+        out.printf("Could not find a task with an ID of %s.", id);
         out.println();
     }
 
