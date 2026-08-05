@@ -6,9 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.codurance.training.tasks.entity.Tasks;
+import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.Project;
 import com.codurance.training.tasks.entity.ProjectName;
 import com.codurance.training.tasks.entity.Task;
@@ -16,7 +15,7 @@ import com.codurance.training.tasks.entity.Task;
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
 
-    private final Tasks tasks = new Tasks();
+    private final ToDoList toDoList = new ToDoList();
     private final BufferedReader in;
     private final PrintWriter out;
 
@@ -76,7 +75,7 @@ public final class TaskList implements Runnable {
     }
 
     private void show() {
-        for (Project project : tasks.entrySet()) {
+        for (Project project : toDoList.getProjects()) {
             out.println(project.getProjectName());
             for (Task task : project.getTasks()) {
                 out.printf("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
@@ -97,11 +96,11 @@ public final class TaskList implements Runnable {
     }
 
     private void addProject(ProjectName name) {
-        tasks.put(name, new ArrayList<Task>());
+        toDoList.addProject(name, new ArrayList<Task>());
     }
 
     private void addTask(ProjectName project, String description) {
-        List<Task> projectTasks = tasks.get(project);
+        List<Task> projectTasks = toDoList.getTasks(project);
         if (projectTasks == null) {
             out.printf("Could not find a project with the name \"%s\".", project);
             out.println();
@@ -120,7 +119,7 @@ public final class TaskList implements Runnable {
 
     private void setDone(String idString, boolean done) {
         int id = Integer.parseInt(idString);
-        for (Project project : tasks.entrySet()) {
+        for (Project project : toDoList.getProjects()) {
             for (Task task : project.getTasks()) {
                 if (task.getId() == id) {
                     task.setDone(done);

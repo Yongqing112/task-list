@@ -3,10 +3,10 @@ package com.codurance.training.tasks.entity;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Tasks {
+public class ToDoList {
     private final List<Project> projects;
 
-    public Tasks() {
+    public ToDoList() {
         this.projects = new ArrayList<>();
     }
 
@@ -14,15 +14,11 @@ public class Tasks {
         return projects;
     }
 
-    public List<Project> entrySet() {
-        return projects;
-    }
-
-    public void put(ProjectName projectName, List<Task> taskList) {
+    public void addProject(ProjectName projectName, List<Task> taskList) {
         projects.add(new Project(projectName, taskList));
     }
 
-    public List<Task> get(ProjectName projectName) {
+    public List<Task> getTasks(ProjectName projectName) {
         return projects.stream()
         .filter(project -> project.getProjectName().equals(projectName))
         .findFirst()
