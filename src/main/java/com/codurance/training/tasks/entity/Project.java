@@ -9,13 +9,13 @@ public class Project {
 
     private List<Task> tasks;
 
-    public Project(){
+    public Project(ProjectName projectName){
+        this.projectName = projectName;
         this.tasks = new ArrayList<>();
     }
 
     public Project(ProjectName projectName, List<Task> tasks){
-        this();
-        this.projectName = projectName;
+        this(projectName);
         this.tasks.addAll(tasks);
     }
 
@@ -33,6 +33,14 @@ public class Project {
 
     public List<Task> getTasks(){
         return tasks;
+    }
+
+    public void setTaskDone(TaskId id, boolean done) {
+        tasks.stream().filter(t -> t.getId().equals(id)).findFirst().ifPresent(t -> t.setDone(done));
+    }
+
+    public boolean containTask(TaskId id) {
+        return this.tasks.stream().anyMatch(t -> t.getId().equals(id));
     }
 
 }

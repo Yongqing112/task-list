@@ -1,6 +1,6 @@
 package com.codurance.training.tasks.entity;
 
-public final class Task {
+public class Task {
     private final TaskId id;
     private final String description;
     private boolean done;
