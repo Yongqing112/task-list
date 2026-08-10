@@ -4,14 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.List;
 
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.entity.Project;
-import com.codurance.training.tasks.entity.ProjectName;
 import com.codurance.training.tasks.entity.Task;
 import com.codurance.training.tasks.entity.TaskId;
+import com.codurance.training.tasks.usecase.Add;
 import com.codurance.training.tasks.usecase.Show;
 
 public final class TaskList implements Runnable {
@@ -58,7 +57,7 @@ public final class TaskList implements Runnable {
                 new Show(toDoList, out).show();;
                 break;
             case "add":
-                add(commandRest[1]);
+                new Add(toDoList, out).add(commandRest[1]);
                 break;
             case "check":
                 check(commandRest[1]);
@@ -73,31 +72,6 @@ public final class TaskList implements Runnable {
                 error(command);
                 break;
         }
-    }
-
-    private void add(String commandLine) {
-        String[] subcommandRest = commandLine.split(" ", 2);
-        String subcommand = subcommandRest[0];
-        if (subcommand.equals("project")) {
-            addProject(ProjectName.of(subcommandRest[1]));
-        } else if (subcommand.equals("task")) {
-            String[] projectTask = subcommandRest[1].split(" ", 2);
-            addTask(ProjectName.of(projectTask[0]), projectTask[1]);
-        }
-    }
-
-    private void addProject(ProjectName name) {
-        toDoList.addProject(name);
-    }
-
-    private void addTask(ProjectName project, String description) {
-        List<Task> projectTasks = toDoList.getTasks(project);
-        if (projectTasks == null) {
-            out.printf("Could not find a project with the name \"%s\".", project);
-            out.println();
-            return;
-        }
-        toDoList.addTask(project, description, false);
     }
 
     private void check(String idString) {
