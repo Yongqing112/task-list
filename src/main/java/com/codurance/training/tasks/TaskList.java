@@ -7,11 +7,7 @@ import java.io.PrintWriter;
 
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
-import com.codurance.training.tasks.usecase.Add;
-import com.codurance.training.tasks.usecase.Error;
-import com.codurance.training.tasks.usecase.Help;
-import com.codurance.training.tasks.usecase.SetDone;
-import com.codurance.training.tasks.usecase.Show;
+import com.codurance.training.tasks.usecase.Execute;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
@@ -45,41 +41,8 @@ public final class TaskList implements Runnable {
             if (command.equals(QUIT)) {
                 break;
             }
-            execute(command);
+            new Execute(toDoList, out).execute(command);
         }
-    }
-
-    private void execute(String commandLine) {
-        String[] commandRest = commandLine.split(" ", 2);
-        String command = commandRest[0];
-        switch (command) {
-            case "show":
-                new Show(toDoList, out).show();;
-                break;
-            case "add":
-                new Add(toDoList, out).add(commandRest[1]);
-                break;
-            case "check":
-                check(commandRest[1]);
-                break;
-            case "uncheck":
-                uncheck(commandRest[1]);
-                break;
-            case "help":
-                new Help(out).help();
-                break;
-            default:
-                new Error(out).error(command);
-                break;
-        }
-    }
-
-    private void check(String idString) {
-        new SetDone(toDoList, out).setDone(idString, true);
-    }
-
-    private void uncheck(String idString) {
-        new SetDone(toDoList, out).setDone(idString, false);
     }
 
 }
