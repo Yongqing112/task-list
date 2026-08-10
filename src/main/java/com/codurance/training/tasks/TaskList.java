@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.codurance.training.tasks.entity.ToDoList;
@@ -13,6 +12,7 @@ import com.codurance.training.tasks.entity.Project;
 import com.codurance.training.tasks.entity.ProjectName;
 import com.codurance.training.tasks.entity.Task;
 import com.codurance.training.tasks.entity.TaskId;
+import com.codurance.training.tasks.usecase.Show;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
@@ -55,7 +55,7 @@ public final class TaskList implements Runnable {
         String command = commandRest[0];
         switch (command) {
             case "show":
-                show();
+                new Show(toDoList, out).show();;
                 break;
             case "add":
                 add(commandRest[1]);
@@ -72,16 +72,6 @@ public final class TaskList implements Runnable {
             default:
                 error(command);
                 break;
-        }
-    }
-
-    private void show() {
-        for (Project project : toDoList.getProjects()) {
-            out.println(project.getProjectName());
-            for (Task task : project.getTasks()) {
-                out.printf("    [%c] %s: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
-            }
-            out.println();
         }
     }
 
