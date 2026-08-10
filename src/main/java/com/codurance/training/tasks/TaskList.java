@@ -11,6 +11,7 @@ import com.codurance.training.tasks.entity.Project;
 import com.codurance.training.tasks.entity.Task;
 import com.codurance.training.tasks.entity.TaskId;
 import com.codurance.training.tasks.usecase.Add;
+import com.codurance.training.tasks.usecase.Help;
 import com.codurance.training.tasks.usecase.SetDone;
 import com.codurance.training.tasks.usecase.Show;
 
@@ -67,7 +68,7 @@ public final class TaskList implements Runnable {
                 uncheck(commandRest[1]);
                 break;
             case "help":
-                help();
+                new Help(out).help();
                 break;
             default:
                 error(command);
