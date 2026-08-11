@@ -60,4 +60,8 @@ public class ToDoList {
     private long nextId() {
         return ++lastId;
     }
+
+    public boolean containTask(TaskId id) {
+        return projects.stream().anyMatch(project -> project.containTask(id));
+    }
 }
