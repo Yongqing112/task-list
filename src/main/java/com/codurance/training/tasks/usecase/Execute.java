@@ -11,6 +11,8 @@ import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneInput;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorInput;
+import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpOutput;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowInput;
@@ -21,6 +23,7 @@ import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
@@ -40,7 +43,6 @@ public class Execute {
         switch (command) {
             case "show":
                 show();
-                ;
                 break;
             case "add":
                 add(commandRest[1]);
@@ -55,7 +57,7 @@ public class Execute {
                 help();
                 break;
             default:
-                new Error(out).error(command);
+                error(command);
                 break;
         }
     }
@@ -108,6 +110,14 @@ public class Execute {
         HelpOutput helpOutput = helpUseCase.execute();
         HelpPresenter helpPresenter = new HelpConsolePresenter(out);
         helpPresenter.present(helpOutput.helpDTO);
+    }
+
+    private void error(String command) {
+        ErrorInput errorInput = new ErrorInput();
+        errorInput.command = command;
+        ErrorUseCase errorUseCase = new ErrorService();
+        errorUseCase.execute(errorInput);
+        out.print(errorUseCase.getMessage());
     }
 
 }
