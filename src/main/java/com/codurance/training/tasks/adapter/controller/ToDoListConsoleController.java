@@ -20,7 +20,6 @@ import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
-import com.codurance.training.tasks.usecase.service.AddTaskService;
 import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
@@ -31,17 +30,20 @@ public class ToDoListConsoleController {
     private final ShowUseCase showUseCase;
     private final ShowPresenter showPresenter;
     private final AddProjectUseCase addProjectUseCase;
+    private final AddTaskUseCase addTaskUseCase;
 
     public ToDoListConsoleController(PrintWriter out,
             ToDoListRepository repository,
             ShowUseCase showUseCase,
             ShowPresenter showPresenter,
-            AddProjectUseCase addProjectUseCase) {
+            AddProjectUseCase addProjectUseCase,
+            AddTaskUseCase addTaskUseCase) {
         this.out = out;
         this.repository = repository;
         this.showUseCase = showUseCase;
         this.showPresenter = showPresenter;
         this.addProjectUseCase = addProjectUseCase;
+        this.addTaskUseCase = addTaskUseCase;
     }
 
     public void execute(String commandLine) {
@@ -86,7 +88,6 @@ public class ToDoListConsoleController {
             addProjectUseCase.execute(addProjectInput);
         } else if (subcommand.equals("task")) {
             String[] projectTask = subcommandRest[1].split(" ", 2);
-            AddTaskUseCase addTaskUseCase = new AddTaskService(repository);
             AddTaskInput addTaskInput = new AddTaskInput();
             addTaskInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
             addTaskInput.projectName = projectTask[0];
