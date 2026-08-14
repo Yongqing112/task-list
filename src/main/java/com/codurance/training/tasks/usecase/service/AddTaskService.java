@@ -1,9 +1,6 @@
 package com.codurance.training.tasks.usecase.service;
 
-import java.util.List;
-
 import com.codurance.training.tasks.entity.ProjectName;
-import com.codurance.training.tasks.entity.Task;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.usecase.port.in.project.task.add.AddTaskInput;

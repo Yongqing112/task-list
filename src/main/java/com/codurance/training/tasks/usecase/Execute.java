@@ -3,28 +3,28 @@ package com.codurance.training.tasks.usecase;
 import java.io.PrintWriter;
 
 import com.codurance.training.tasks.TaskList;
-import com.codurance.training.tasks.entity.Project;
-import com.codurance.training.tasks.entity.Task;
-import com.codurance.training.tasks.entity.TaskId;
-import com.codurance.training.tasks.entity.ToDoList;
+import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.project.task.add.AddTaskInput;
 import com.codurance.training.tasks.usecase.port.in.project.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.project.task.setDone.SetDoneInput;
 import com.codurance.training.tasks.usecase.port.in.project.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowInput;
+import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowOutput;
+import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
+import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
+import com.codurance.training.tasks.usecase.service.ShowService;
 
 public class Execute {
-    private final ToDoList toDoList;
     private final PrintWriter out;
     private final ToDoListRepository repository;
 
-    public Execute(ToDoList toDoList, PrintWriter out, ToDoListRepository repository) {
-        this.toDoList = toDoList;
+    public Execute(PrintWriter out, ToDoListRepository repository) {
         this.out = out;
         this.repository = repository;
     }
@@ -34,7 +34,7 @@ public class Execute {
         String command = commandRest[0];
         switch (command) {
             case "show":
-                new Show(toDoList, out).show();
+                show();
                 ;
                 break;
             case "add":
@@ -53,6 +53,16 @@ public class Execute {
                 new Error(out).error(command);
                 break;
         }
+    }
+
+    private void show() {
+        ShowUseCase showUseCase = new ShowService(repository);
+        ShowInput showInput = new ShowInput();
+        showInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
+        ShowOutput showOutput = showUseCase.execute(showInput);
+        ShowPresenter showPresenter = new ShowConsolePresenter(out);
+        showPresenter.present(showOutput.toDoListDTO);
+
     }
 
     private void add(String commandLine) {

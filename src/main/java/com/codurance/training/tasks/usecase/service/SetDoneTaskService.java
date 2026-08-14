@@ -1,7 +1,5 @@
 package com.codurance.training.tasks.usecase.service;
 
-import com.codurance.training.tasks.entity.Project;
-import com.codurance.training.tasks.entity.Task;
 import com.codurance.training.tasks.entity.TaskId;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;

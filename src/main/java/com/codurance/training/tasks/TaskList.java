@@ -18,7 +18,7 @@ public final class TaskList implements Runnable {
     private final BufferedReader in;
     private final PrintWriter out;
     private final ToDoListRepository repository;
-    
+
     public static final String DEFAULT_TO_DO_LIST_ID = "001";
 
     public static void main(String[] args) throws Exception {
@@ -31,7 +31,7 @@ public final class TaskList implements Runnable {
         this.in = reader;
         this.out = writer;
         repository = new ToDoListInMemoryRepository();
-        if(repository.findById(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)).isEmpty()) {
+        if (repository.findById(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)).isEmpty()) {
             repository.save(toDoList);
         }
     }
@@ -49,7 +49,7 @@ public final class TaskList implements Runnable {
             if (command.equals(QUIT)) {
                 break;
             }
-            new Execute(toDoList, out, repository).execute(command);
+            new Execute(out, repository).execute(command);
         }
     }
 
