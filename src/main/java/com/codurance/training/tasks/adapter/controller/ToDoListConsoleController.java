@@ -17,36 +17,33 @@ import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowInput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowOutput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
-import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.ErrorService;
-import com.codurance.training.tasks.usecase.service.HelpService;
-import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 
 public class ToDoListConsoleController {
     private final PrintWriter out;
-    private final ToDoListRepository repository;
     private final ShowUseCase showUseCase;
     private final ShowPresenter showPresenter;
     private final AddProjectUseCase addProjectUseCase;
     private final AddTaskUseCase addTaskUseCase;
     private final SetDoneUseCase setDoneUseCase;
+    private final HelpUseCase helpUseCase;
 
     public ToDoListConsoleController(PrintWriter out,
-            ToDoListRepository repository,
             ShowUseCase showUseCase,
             ShowPresenter showPresenter,
             AddProjectUseCase addProjectUseCase,
             AddTaskUseCase addTaskUseCase,
-            SetDoneUseCase setDoneUseCase) {
+            SetDoneUseCase setDoneUseCase,
+            HelpUseCase helpUseCase) {
         this.out = out;
-        this.repository = repository;
         this.showUseCase = showUseCase;
         this.showPresenter = showPresenter;
         this.addProjectUseCase = addProjectUseCase;
         this.addTaskUseCase = addTaskUseCase;
         this.setDoneUseCase = setDoneUseCase;
+        this.helpUseCase = helpUseCase;
     }
 
     public void execute(String commandLine) {
@@ -112,7 +109,6 @@ public class ToDoListConsoleController {
     }
 
     private void help() {
-        HelpUseCase helpUseCase = new HelpService();
         HelpOutput helpOutput = helpUseCase.execute();
         HelpPresenter helpPresenter = new HelpConsolePresenter(out);
         helpPresenter.present(helpOutput.helpDTO);

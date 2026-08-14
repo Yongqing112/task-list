@@ -13,11 +13,13 @@ import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
 
@@ -33,6 +35,7 @@ public final class TaskList implements Runnable {
     private final AddProjectUseCase addProjectUseCase;
     private final AddTaskUseCase addTaskUseCase;
     private final SetDoneUseCase setDoneUseCase;
+    private final HelpUseCase helpUseCase;
 
     public static final String DEFAULT_TO_DO_LIST_ID = "001";
 
@@ -54,6 +57,7 @@ public final class TaskList implements Runnable {
         this.addProjectUseCase = new AddProjectService(repository);
         this.addTaskUseCase = new AddTaskService(repository);
         this.setDoneUseCase = new SetDoneTaskService(repository);
+        this.helpUseCase = new HelpService();
     }
 
     public void run() {
@@ -70,12 +74,12 @@ public final class TaskList implements Runnable {
                 break;
             }
             new ToDoListConsoleController(out,
-                    repository,
                     showUseCase,
                     showPresenter,
                     addProjectUseCase,
                     addTaskUseCase,
-                    setDoneUseCase).execute(command);
+                    setDoneUseCase,
+                    helpUseCase).execute(command);
         }
     }
 
