@@ -10,9 +10,11 @@ import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
+import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
+import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.ShowService;
 
 public final class TaskList implements Runnable {
@@ -24,6 +26,7 @@ public final class TaskList implements Runnable {
     private final ToDoListRepository repository;
     private final ShowUseCase showUseCase;
     private final ShowPresenter showPresenter;
+    private final AddProjectUseCase addProjectUseCase;
 
     public static final String DEFAULT_TO_DO_LIST_ID = "001";
 
@@ -42,6 +45,7 @@ public final class TaskList implements Runnable {
         }
         this.showUseCase = new ShowService(repository);
         this.showPresenter = new ShowConsolePresenter(out);
+        this.addProjectUseCase = new AddProjectService(repository);
     }
 
     public void run() {
@@ -60,7 +64,8 @@ public final class TaskList implements Runnable {
             new ToDoListConsoleController(out,
                     repository,
                     showUseCase,
-                    showPresenter).execute(command);
+                    showPresenter,
+                    addProjectUseCase).execute(command);
         }
     }
 
