@@ -19,7 +19,6 @@ import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowOutput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
-import com.codurance.training.tasks.usecase.service.ErrorService;
 
 public class ToDoListConsoleController {
     private final PrintWriter out;
@@ -29,6 +28,7 @@ public class ToDoListConsoleController {
     private final AddTaskUseCase addTaskUseCase;
     private final SetDoneUseCase setDoneUseCase;
     private final HelpUseCase helpUseCase;
+    private final ErrorUseCase errorUseCase;
 
     public ToDoListConsoleController(PrintWriter out,
             ShowUseCase showUseCase,
@@ -36,7 +36,8 @@ public class ToDoListConsoleController {
             AddProjectUseCase addProjectUseCase,
             AddTaskUseCase addTaskUseCase,
             SetDoneUseCase setDoneUseCase,
-            HelpUseCase helpUseCase) {
+            HelpUseCase helpUseCase,
+            ErrorUseCase errorUseCase) {
         this.out = out;
         this.showUseCase = showUseCase;
         this.showPresenter = showPresenter;
@@ -44,6 +45,7 @@ public class ToDoListConsoleController {
         this.addTaskUseCase = addTaskUseCase;
         this.setDoneUseCase = setDoneUseCase;
         this.helpUseCase = helpUseCase;
+        this.errorUseCase = errorUseCase;
     }
 
     public void execute(String commandLine) {
@@ -117,7 +119,6 @@ public class ToDoListConsoleController {
     private void error(String command) {
         ErrorInput errorInput = new ErrorInput();
         errorInput.command = command;
-        ErrorUseCase errorUseCase = new ErrorService();
         errorUseCase.execute(errorInput);
         out.print(errorUseCase.getMessage());
     }
