@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import com.codurance.training.tasks.TaskList;
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
-import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
@@ -26,15 +25,21 @@ import com.codurance.training.tasks.usecase.service.AddTaskService;
 import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
-import com.codurance.training.tasks.usecase.service.ShowService;
 
 public class ToDoListConsoleController {
     private final PrintWriter out;
     private final ToDoListRepository repository;
+    private final ShowUseCase showUseCase;
+    private final ShowPresenter showPresenter;
 
-    public ToDoListConsoleController(PrintWriter out, ToDoListRepository repository) {
+    public ToDoListConsoleController(PrintWriter out,
+            ToDoListRepository repository,
+            ShowUseCase showUseCase,
+            ShowPresenter showPresenter) {
         this.out = out;
         this.repository = repository;
+        this.showUseCase = showUseCase;
+        this.showPresenter = showPresenter;
     }
 
     public void execute(String commandLine) {
@@ -63,13 +68,10 @@ public class ToDoListConsoleController {
     }
 
     private void show() {
-        ShowUseCase showUseCase = new ShowService(repository);
         ShowInput showInput = new ShowInput();
         showInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
         ShowOutput showOutput = showUseCase.execute(showInput);
-        ShowPresenter showPresenter = new ShowConsolePresenter(out);
         showPresenter.present(showOutput.toDoListDTO);
-
     }
 
     private void add(String commandLine) {

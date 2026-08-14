@@ -6,10 +6,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import com.codurance.training.tasks.adapter.controller.ToDoListConsoleController;
+import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
+import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
+import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
+import com.codurance.training.tasks.usecase.service.ShowService;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
@@ -18,6 +22,8 @@ public final class TaskList implements Runnable {
     private final BufferedReader in;
     private final PrintWriter out;
     private final ToDoListRepository repository;
+    private final ShowUseCase showUseCase;
+    private final ShowPresenter showPresenter;
 
     public static final String DEFAULT_TO_DO_LIST_ID = "001";
 
@@ -34,6 +40,8 @@ public final class TaskList implements Runnable {
         if (repository.findById(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)).isEmpty()) {
             repository.save(toDoList);
         }
+        this.showUseCase = new ShowService(repository);
+        this.showPresenter = new ShowConsolePresenter(out);
     }
 
     public void run() {
@@ -49,7 +57,10 @@ public final class TaskList implements Runnable {
             if (command.equals(QUIT)) {
                 break;
             }
-            new ToDoListConsoleController(out, repository).execute(command);
+            new ToDoListConsoleController(out,
+                    repository,
+                    showUseCase,
+                    showPresenter).execute(command);
         }
     }
 
