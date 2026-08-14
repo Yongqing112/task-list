@@ -3,6 +3,7 @@ package com.codurance.training.tasks.usecase;
 import java.io.PrintWriter;
 
 import com.codurance.training.tasks.TaskList;
+import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
@@ -10,13 +11,17 @@ import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneInput;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpOutput;
+import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowInput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowOutput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
+import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
 
@@ -47,7 +52,7 @@ public class Execute {
                 setDone(commandRest[1], false);
                 break;
             case "help":
-                new Help(out).help();
+                help();
                 break;
             default:
                 new Error(out).error(command);
@@ -96,6 +101,13 @@ public class Execute {
         SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
         setDoneUseCase.execute(setDoneInput);
         out.print(setDoneUseCase.getMessage());
+    }
+
+    private void help() {
+        HelpUseCase helpUseCase = new HelpService();
+        HelpOutput helpOutput = helpUseCase.execute();
+        HelpPresenter helpPresenter = new HelpConsolePresenter(out);
+        helpPresenter.present(helpOutput.helpDTO);
     }
 
 }
