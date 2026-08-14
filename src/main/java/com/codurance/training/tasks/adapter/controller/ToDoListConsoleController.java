@@ -1,10 +1,9 @@
-package com.codurance.training.tasks.usecase;
+package com.codurance.training.tasks.adapter.controller;
 
 import java.io.PrintWriter;
 
 import com.codurance.training.tasks.TaskList;
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
-import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
@@ -18,23 +17,35 @@ import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowInput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowOutput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
-import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
-import com.codurance.training.tasks.usecase.service.AddProjectService;
-import com.codurance.training.tasks.usecase.service.AddTaskService;
-import com.codurance.training.tasks.usecase.service.ErrorService;
-import com.codurance.training.tasks.usecase.service.HelpService;
-import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
-import com.codurance.training.tasks.usecase.service.ShowService;
 
-public class Execute {
+public class ToDoListConsoleController {
     private final PrintWriter out;
-    private final ToDoListRepository repository;
+    private final ShowUseCase showUseCase;
+    private final ShowPresenter showPresenter;
+    private final AddProjectUseCase addProjectUseCase;
+    private final AddTaskUseCase addTaskUseCase;
+    private final SetDoneUseCase setDoneUseCase;
+    private final HelpUseCase helpUseCase;
+    private final ErrorUseCase errorUseCase;
 
-    public Execute(PrintWriter out, ToDoListRepository repository) {
+    public ToDoListConsoleController(PrintWriter out,
+            ShowUseCase showUseCase,
+            ShowPresenter showPresenter,
+            AddProjectUseCase addProjectUseCase,
+            AddTaskUseCase addTaskUseCase,
+            SetDoneUseCase setDoneUseCase,
+            HelpUseCase helpUseCase,
+            ErrorUseCase errorUseCase) {
         this.out = out;
-        this.repository = repository;
+        this.showUseCase = showUseCase;
+        this.showPresenter = showPresenter;
+        this.addProjectUseCase = addProjectUseCase;
+        this.addTaskUseCase = addTaskUseCase;
+        this.setDoneUseCase = setDoneUseCase;
+        this.helpUseCase = helpUseCase;
+        this.errorUseCase = errorUseCase;
     }
 
     public void execute(String commandLine) {
@@ -63,27 +74,22 @@ public class Execute {
     }
 
     private void show() {
-        ShowUseCase showUseCase = new ShowService(repository);
         ShowInput showInput = new ShowInput();
         showInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
         ShowOutput showOutput = showUseCase.execute(showInput);
-        ShowPresenter showPresenter = new ShowConsolePresenter(out);
         showPresenter.present(showOutput.toDoListDTO);
-
     }
 
     private void add(String commandLine) {
         String[] subcommandRest = commandLine.split(" ", 2);
         String subcommand = subcommandRest[0];
         if (subcommand.equals("project")) {
-            AddProjectUseCase addProjectUseCase = new AddProjectService(repository);
             AddProjectInput addProjectInput = new AddProjectInput();
             addProjectInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
             addProjectInput.projectName = subcommandRest[1];
             addProjectUseCase.execute(addProjectInput);
         } else if (subcommand.equals("task")) {
             String[] projectTask = subcommandRest[1].split(" ", 2);
-            AddTaskUseCase addTaskUseCase = new AddTaskService(repository);
             AddTaskInput addTaskInput = new AddTaskInput();
             addTaskInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
             addTaskInput.projectName = projectTask[0];
@@ -100,13 +106,11 @@ public class Execute {
         setDoneInput.taskId = taskId;
         setDoneInput.done = done;
 
-        SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
         setDoneUseCase.execute(setDoneInput);
         out.print(setDoneUseCase.getMessage());
     }
 
     private void help() {
-        HelpUseCase helpUseCase = new HelpService();
         HelpOutput helpOutput = helpUseCase.execute();
         HelpPresenter helpPresenter = new HelpConsolePresenter(out);
         helpPresenter.present(helpOutput.helpDTO);
@@ -115,7 +119,6 @@ public class Execute {
     private void error(String command) {
         ErrorInput errorInput = new ErrorInput();
         errorInput.command = command;
-        ErrorUseCase errorUseCase = new ErrorService();
         errorUseCase.execute(errorInput);
         out.print(errorUseCase.getMessage());
     }
