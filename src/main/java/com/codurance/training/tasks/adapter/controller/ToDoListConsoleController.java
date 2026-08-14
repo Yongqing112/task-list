@@ -1,4 +1,4 @@
-package com.codurance.training.tasks.usecase;
+package com.codurance.training.tasks.adapter.controller;
 
 import java.io.PrintWriter;
 
@@ -28,11 +28,11 @@ import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
 
-public class Execute {
+public class ToDoListConsoleController {
     private final PrintWriter out;
     private final ToDoListRepository repository;
 
-    public Execute(PrintWriter out, ToDoListRepository repository) {
+    public ToDoListConsoleController(PrintWriter out, ToDoListRepository repository) {
         this.out = out;
         this.repository = repository;
     }

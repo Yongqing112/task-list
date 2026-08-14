@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import com.codurance.training.tasks.adapter.controller.ToDoListConsoleController;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
-import com.codurance.training.tasks.usecase.Execute;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 
 public final class TaskList implements Runnable {
@@ -49,7 +49,7 @@ public final class TaskList implements Runnable {
             if (command.equals(QUIT)) {
                 break;
             }
-            new Execute(out, repository).execute(command);
+            new ToDoListConsoleController(out, repository).execute(command);
         }
     }
 
