@@ -1,4 +1,4 @@
-package com.codurance.training.tasks.usecase.port.in.project.task.add;
+package com.codurance.training.tasks.usecase.port.in.task.add;
 
 public interface AddTaskUseCase {
     void setMessage(String message);

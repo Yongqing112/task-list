@@ -1,4 +1,4 @@
-package com.codurance.training.tasks.usecase.port.in.project.task.setDone;
+package com.codurance.training.tasks.usecase.port.in.task.setDone;
 
 public interface SetDoneUseCase {
     void setMessage(String message);

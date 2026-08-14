@@ -3,8 +3,8 @@ package com.codurance.training.tasks.usecase.service;
 import com.codurance.training.tasks.entity.ProjectName;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
-import com.codurance.training.tasks.usecase.port.in.project.task.add.AddTaskInput;
-import com.codurance.training.tasks.usecase.port.in.project.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
+import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 
 public class AddTaskService implements AddTaskUseCase {

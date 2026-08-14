@@ -1,4 +1,4 @@
-package com.codurance.training.tasks.usecase.port.in.project.task.setDone;
+package com.codurance.training.tasks.usecase.port.in.task.setDone;
 
 public class SetDoneInput {
     public String toDoListId;
