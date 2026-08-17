@@ -2,8 +2,8 @@ package com.codurance.training.tasks.adapter.controller;
 
 import java.io.PrintWriter;
 
-import com.codurance.training.tasks.TaskList;
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
+import com.codurance.training.tasks.io.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
@@ -75,7 +75,7 @@ public class ToDoListConsoleController {
 
     private void show() {
         ShowInput showInput = new ShowInput();
-        showInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
+        showInput.toDoListId = ToDoListApp.DEFAULT_TO_DO_LIST_ID;
         ShowOutput showOutput = showUseCase.execute(showInput);
         showPresenter.present(showOutput.toDoListDTO);
     }
@@ -85,13 +85,13 @@ public class ToDoListConsoleController {
         String subcommand = subcommandRest[0];
         if (subcommand.equals("project")) {
             AddProjectInput addProjectInput = new AddProjectInput();
-            addProjectInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
+            addProjectInput.toDoListId = ToDoListApp.DEFAULT_TO_DO_LIST_ID;
             addProjectInput.projectName = subcommandRest[1];
             addProjectUseCase.execute(addProjectInput);
         } else if (subcommand.equals("task")) {
             String[] projectTask = subcommandRest[1].split(" ", 2);
             AddTaskInput addTaskInput = new AddTaskInput();
-            addTaskInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
+            addTaskInput.toDoListId = ToDoListApp.DEFAULT_TO_DO_LIST_ID;
             addTaskInput.projectName = projectTask[0];
             addTaskInput.description = projectTask[1];
             addTaskInput.done = false;
@@ -102,7 +102,7 @@ public class ToDoListConsoleController {
 
     private void setDone(String taskId, boolean done) {
         SetDoneInput setDoneInput = new SetDoneInput();
-        setDoneInput.toDoListId = TaskList.DEFAULT_TO_DO_LIST_ID;
+        setDoneInput.toDoListId = ToDoListApp.DEFAULT_TO_DO_LIST_ID;
         setDoneInput.taskId = taskId;
         setDoneInput.done = done;
 
