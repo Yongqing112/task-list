@@ -10,7 +10,25 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
+import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
+import com.codurance.training.tasks.entity.ToDoList;
+import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.ToDoListApp;
+import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
+import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
+import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
+import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
+import com.codurance.training.tasks.usecase.service.AddProjectService;
+import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.ErrorService;
+import com.codurance.training.tasks.usecase.service.HelpService;
+import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
+import com.codurance.training.tasks.usecase.service.ShowService;
 
 import static java.lang.System.lineSeparator;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,17 +47,35 @@ public final class ApplicationTest {
     public ApplicationTest() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new PipedInputStream(inStream)));
         PrintWriter out = new PrintWriter(new PipedOutputStream(outStream), true);
-        ToDoListApp taskList = new ToDoListApp(in, out);
-        applicationThread = new Thread(taskList);
+        ToDoListRepository repository = new ToDoListInMemoryRepository();
+        repository.save(new ToDoList(ToDoListId.of(ToDoListApp.DEFAULT_TO_DO_LIST_ID)));
+        ShowUseCase showUseCase = new ShowService(repository);
+        ShowPresenter showPresenter = new ShowConsolePresenter(out);
+        AddProjectUseCase addProjectUseCase = new AddProjectService(repository);
+        AddTaskUseCase addTaskUseCase = new AddTaskService(repository);
+        SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
+        HelpUseCase helpUseCase = new HelpService();
+        ErrorUseCase errorUseCase = new ErrorService();
+        ToDoListApp toDoListApp = new ToDoListApp(
+                in,
+                out,
+                showUseCase,
+                showPresenter,
+                addProjectUseCase,
+                addTaskUseCase,
+                setDoneUseCase,
+                helpUseCase,
+                errorUseCase);
+        applicationThread = new Thread(toDoListApp);
     }
 
-    @Before public void
-    start_the_application() {
+    @Before
+    public void start_the_application() {
         applicationThread.start();
     }
 
-    @After public void
-    kill_the_application() throws IOException, InterruptedException {
+    @After
+    public void kill_the_application() throws IOException, InterruptedException {
         if (!stillRunning()) {
             return;
         }
@@ -53,8 +89,8 @@ public final class ApplicationTest {
         throw new IllegalStateException("The application is still running.");
     }
 
-    @Test(timeout = 1000) public void
-    it_works() throws IOException {
+    @Test(timeout = 1000)
+    public void it_works() throws IOException {
         execute("show");
 
         execute("add project secrets");
@@ -63,11 +99,10 @@ public final class ApplicationTest {
 
         execute("show");
         readLines(
-            "secrets",
-            "    [ ] 1: Eat more donuts.",
-            "    [ ] 2: Destroy all humans.",
-            ""
-        );
+                "secrets",
+                "    [ ] 1: Eat more donuts.",
+                "    [ ] 2: Destroy all humans.",
+                "");
 
         execute("add project training");
         execute("add task training Four Elements of Simple Design");
@@ -95,19 +130,16 @@ public final class ApplicationTest {
                 "    [x] 6: Primitive Obsession",
                 "    [ ] 7: Outside-In TDD",
                 "    [ ] 8: Interaction-Driven Design",
-                ""
-        );
+                "");
 
         // Added by Teddy to verify error handling messages
         execute("add task DDD learn CA.");
         readLines(
-                "Could not find a project with the name \"DDD\"."
-        );
+                "Could not find a project with the name \"DDD\".");
 
         execute("check 99");
         readLines(
-                "Could not find a task with an ID of 99."
-        );
+                "Could not find a task with an ID of 99.");
 
         execute("help");
         readLines(
@@ -117,13 +149,11 @@ public final class ApplicationTest {
                 "  add task <project name> <task description>",
                 "  check <task ID>",
                 "  uncheck <task ID>",
-                ""
-        );
+                "");
 
         execute("not-a-command");
         readLines(
-                "I don't know what the command \"not-a-command\" is."
-        );
+                "I don't know what the command \"not-a-command\" is.");
 
         execute("quit");
     }

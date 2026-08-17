@@ -28,10 +28,8 @@ import com.codurance.training.tasks.usecase.service.ShowService;
 public final class ToDoListApp implements Runnable {
     private static final String QUIT = "quit";
 
-    private final ToDoList toDoList = new ToDoList(ToDoListId.of(DEFAULT_TO_DO_LIST_ID));
     private final BufferedReader in;
     private final PrintWriter out;
-    private final ToDoListRepository repository;
     private final ShowUseCase showUseCase;
     private final ShowPresenter showPresenter;
     private final AddProjectUseCase addProjectUseCase;
@@ -45,23 +43,46 @@ public final class ToDoListApp implements Runnable {
     public static void main(String[] args) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(System.out);
-        new ToDoListApp(in, out).run();
+        ToDoListRepository repository = new ToDoListInMemoryRepository();
+        repository.save(new ToDoList(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)));
+        ShowUseCase showUseCase = new ShowService(repository);
+        ShowPresenter showPresenter = new ShowConsolePresenter(out);
+        AddProjectUseCase addProjectUseCase = new AddProjectService(repository);
+        AddTaskUseCase addTaskUseCase = new AddTaskService(repository);
+        SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
+        HelpUseCase helpUseCase = new HelpService();
+        ErrorUseCase errorUseCase = new ErrorService();
+        new ToDoListApp(
+                in,
+                out,
+                showUseCase,
+                showPresenter,
+                addProjectUseCase,
+                addTaskUseCase,
+                setDoneUseCase,
+                helpUseCase,
+                errorUseCase).run();
     }
 
-    public ToDoListApp(BufferedReader reader, PrintWriter writer) {
+    public ToDoListApp(
+            BufferedReader reader,
+            PrintWriter writer,
+            ShowUseCase showUseCase,
+            ShowPresenter showPresenter,
+            AddProjectUseCase addProjectUseCase,
+            AddTaskUseCase addTaskUseCase,
+            SetDoneUseCase setDoneUseCase,
+            HelpUseCase helpUseCase,
+            ErrorUseCase errorUseCase) {
         this.in = reader;
         this.out = writer;
-        repository = new ToDoListInMemoryRepository();
-        if (repository.findById(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)).isEmpty()) {
-            repository.save(toDoList);
-        }
-        this.showUseCase = new ShowService(repository);
-        this.showPresenter = new ShowConsolePresenter(out);
-        this.addProjectUseCase = new AddProjectService(repository);
-        this.addTaskUseCase = new AddTaskService(repository);
-        this.setDoneUseCase = new SetDoneTaskService(repository);
-        this.helpUseCase = new HelpService();
-        this.errorUseCase = new ErrorService();
+        this.showUseCase = showUseCase;
+        this.showPresenter = showPresenter;
+        this.addProjectUseCase = addProjectUseCase;
+        this.addTaskUseCase = addTaskUseCase;
+        this.setDoneUseCase = setDoneUseCase;
+        this.helpUseCase = helpUseCase;
+        this.errorUseCase = errorUseCase;
     }
 
     public void run() {
