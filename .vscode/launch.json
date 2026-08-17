@@ -1,0 +1,14 @@
+{
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Spring Boot-ToDoListSpringBootApp<tasks>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "com.codurance.training.tasks.io.springboot.ToDoListSpringBootApp",
+			"projectName": "tasks",
+			"args": "",
+			"envFile": "${workspaceFolder}/.env"
+		}
+	]
+}

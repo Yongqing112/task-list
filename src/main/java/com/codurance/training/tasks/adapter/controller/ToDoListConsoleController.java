@@ -3,7 +3,7 @@ package com.codurance.training.tasks.adapter.controller;
 import java.io.PrintWriter;
 
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
-import com.codurance.training.tasks.io.ToDoListApp;
+import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskInput;
@@ -28,6 +28,7 @@ public class ToDoListConsoleController {
     private final AddTaskUseCase addTaskUseCase;
     private final SetDoneUseCase setDoneUseCase;
     private final HelpUseCase helpUseCase;
+    private final HelpPresenter helpPresenter;
     private final ErrorUseCase errorUseCase;
 
     public ToDoListConsoleController(PrintWriter out,
@@ -37,6 +38,7 @@ public class ToDoListConsoleController {
             AddTaskUseCase addTaskUseCase,
             SetDoneUseCase setDoneUseCase,
             HelpUseCase helpUseCase,
+            HelpPresenter helpPresenter,
             ErrorUseCase errorUseCase) {
         this.out = out;
         this.showUseCase = showUseCase;
@@ -45,6 +47,7 @@ public class ToDoListConsoleController {
         this.addTaskUseCase = addTaskUseCase;
         this.setDoneUseCase = setDoneUseCase;
         this.helpUseCase = helpUseCase;
+        this.helpPresenter = helpPresenter;
         this.errorUseCase = errorUseCase;
     }
 

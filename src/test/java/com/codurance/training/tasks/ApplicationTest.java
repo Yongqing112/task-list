@@ -6,15 +6,17 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
+import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
-import com.codurance.training.tasks.io.ToDoListApp;
+import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
@@ -22,6 +24,7 @@ import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
+import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
@@ -55,6 +58,7 @@ public final class ApplicationTest {
         AddTaskUseCase addTaskUseCase = new AddTaskService(repository);
         SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
         HelpUseCase helpUseCase = new HelpService();
+        HelpPresenter helpPresenter = new HelpConsolePresenter(out);
         ErrorUseCase errorUseCase = new ErrorService();
         ToDoListApp toDoListApp = new ToDoListApp(
                 in,
@@ -65,16 +69,17 @@ public final class ApplicationTest {
                 addTaskUseCase,
                 setDoneUseCase,
                 helpUseCase,
+                helpPresenter,
                 errorUseCase);
         applicationThread = new Thread(toDoListApp);
     }
 
-    @Before
+    @BeforeEach
     public void start_the_application() {
         applicationThread.start();
     }
 
-    @After
+    @AfterEach
     public void kill_the_application() throws IOException, InterruptedException {
         if (!stillRunning()) {
             return;
@@ -89,7 +94,8 @@ public final class ApplicationTest {
         throw new IllegalStateException("The application is still running.");
     }
 
-    @Test(timeout = 1000)
+    @Test
+    @Timeout(1000)
     public void it_works() throws IOException {
         execute("show");
 
