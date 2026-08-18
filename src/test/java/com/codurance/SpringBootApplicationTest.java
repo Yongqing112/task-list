@@ -15,6 +15,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
@@ -63,7 +64,7 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 			AddTaskUseCase addTaskUseCase,
 			SetDoneUseCase setDoneUseCase,
 			HelpUseCase helpUseCase,
-			HelpPresenter helpPresenter,
+			@Qualifier("consoleHelp") HelpPresenter helpPresenter,
 			ErrorUseCase errorUseCase) {
 
 		this.showUseCase = showUseCase;

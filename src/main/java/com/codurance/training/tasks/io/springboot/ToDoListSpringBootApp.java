@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -62,7 +63,7 @@ public class ToDoListSpringBootApp extends SpringBootServletInitializer implemen
 			AddTaskUseCase addTaskUseCase,
 			SetDoneUseCase setDoneUseCase,
 			HelpUseCase helpUseCase,
-			HelpPresenter helpPresenter,
+			@Qualifier("consoleHelp") HelpPresenter helpPresenter,
 			ErrorUseCase errorUseCase) {
 		this.in = reader;
 		this.out = writer;
