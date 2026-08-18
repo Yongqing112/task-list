@@ -13,7 +13,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.codurance.training.tasks.adapter.controller.ToDoListConsoleController;
+import com.codurance.training.tasks.adapter.controller.console.ToDoListConsoleController;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.springboot.config.UseCaseInjection;

@@ -1,4 +1,4 @@
-package com.codurance.training.tasks.adapter.controller;
+package com.codurance.training.tasks.adapter.controller.console;
 
 import java.io.PrintWriter;
 
