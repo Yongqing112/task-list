@@ -1,8 +1,7 @@
-package com.codurance.training.tasks.adapter.controller;
+package com.codurance.training.tasks.adapter.controller.console;
 
 import java.io.PrintWriter;
 
-import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
@@ -115,7 +114,6 @@ public class ToDoListConsoleController {
 
     private void help() {
         HelpOutput helpOutput = helpUseCase.execute();
-        HelpPresenter helpPresenter = new HelpConsolePresenter(out);
         helpPresenter.present(helpOutput.helpDTO);
     }
 

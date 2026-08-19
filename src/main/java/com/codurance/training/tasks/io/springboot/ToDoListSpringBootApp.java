@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -13,7 +14,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.codurance.training.tasks.adapter.controller.ToDoListConsoleController;
+import com.codurance.training.tasks.adapter.controller.console.ToDoListConsoleController;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.springboot.config.UseCaseInjection;
@@ -62,7 +63,7 @@ public class ToDoListSpringBootApp extends SpringBootServletInitializer implemen
 			AddTaskUseCase addTaskUseCase,
 			SetDoneUseCase setDoneUseCase,
 			HelpUseCase helpUseCase,
-			HelpPresenter helpPresenter,
+			@Qualifier("consoleHelp") HelpPresenter helpPresenter,
 			ErrorUseCase errorUseCase) {
 		this.in = reader;
 		this.out = writer;

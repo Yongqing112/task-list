@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-import com.codurance.training.tasks.adapter.controller.ToDoListConsoleController;
+import com.codurance.training.tasks.adapter.controller.console.ToDoListConsoleController;
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;

@@ -77,8 +77,13 @@ public class UseCaseInjection {
 		return new HelpService();
 	}
 
-	@Bean
-	public HelpPresenter helpPresenter() {
+	@Bean(name = "consoleHelp")
+	public HelpPresenter consoleHelpPresenter() {
+		return new HelpConsolePresenter(getOut());
+	}
+
+	@Bean(name = "webHelp")
+	public HelpPresenter webHelpPresenter() {
 		return new HelpConsolePresenter(getOut());
 	}
 

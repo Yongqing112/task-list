@@ -32,7 +32,7 @@ public class AddTaskService implements AddTaskUseCase {
         if (toDoList.getProject(ProjectName.of(addTaskInput.projectName)).isEmpty()) {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("Could not find a project with the name \"%s\".", addTaskInput.projectName));
-            sb.append("\r\n");
+            sb.append(System.lineSeparator());
 
             setMessage(sb.toString());
             return;

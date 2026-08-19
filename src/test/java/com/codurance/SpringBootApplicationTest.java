@@ -15,14 +15,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.config.SpringBootTestContextProvider;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
-import com.codurance.training.tasks.io.springboot.ToDoListSpringBootApp;
 import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
@@ -31,9 +29,6 @@ import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
-import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter;
-import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
-import com.codurance.training.tasks.usecase.service.HelpService;
 
 public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 	public static final String PROMPT = "> ";
@@ -46,33 +41,27 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 	private final BufferedReader outReader = new BufferedReader(new InputStreamReader(outStream));
 
 	private final ShowUseCase showUseCase;
-	private final ShowPresenter showPresenter;
 	private final AddProjectUseCase addProjectUseCase;
 	private final AddTaskUseCase addTaskUseCase;
 	private final SetDoneUseCase setDoneUseCase;
 	private final HelpUseCase helpUseCase;
-	private final HelpPresenter helpPresenter;
 	private final ErrorUseCase errorUseCase;
 
 	@Autowired
 	public SpringBootApplicationTest(
 			ToDoListRepository repository,
 			ShowUseCase showUseCase,
-			ShowPresenter showPresenter,
 			AddProjectUseCase addProjectUseCase,
 			AddTaskUseCase addTaskUseCase,
 			SetDoneUseCase setDoneUseCase,
 			HelpUseCase helpUseCase,
-			HelpPresenter helpPresenter,
 			ErrorUseCase errorUseCase) {
 
 		this.showUseCase = showUseCase;
-		this.showPresenter = showPresenter;
 		this.addProjectUseCase = addProjectUseCase;
 		this.addTaskUseCase = addTaskUseCase;
 		this.setDoneUseCase = setDoneUseCase;
 		this.helpUseCase = helpUseCase;
-		this.helpPresenter = helpPresenter;
 		this.errorUseCase = errorUseCase;
 		repository.save(new ToDoList(ToDoListId.of(ToDoListApp.DEFAULT_TO_DO_LIST_ID)));
 	}
