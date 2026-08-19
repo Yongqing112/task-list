@@ -9,6 +9,7 @@ import com.codurance.training.tasks.adapter.controller.console.ToDoListConsoleCo
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
+import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepositoryPeer;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
@@ -46,7 +47,7 @@ public final class ToDoListApp implements Runnable {
     public static void main(String[] args) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(System.out);
-        ToDoListRepository repository = new ToDoListInMemoryRepository();
+        ToDoListRepository repository = new ToDoListInMemoryRepository(new ToDoListInMemoryRepositoryPeer());
         repository.save(new ToDoList(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)));
         ShowUseCase showUseCase = new ShowService(repository);
         ShowPresenter showPresenter = new ShowConsolePresenter(out);

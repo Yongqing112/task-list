@@ -1,7 +1,6 @@
 package com.codurance.training.tasks.usecase.port;
 
 import java.util.List;
-import java.util.Set;
 
 import com.codurance.training.tasks.entity.Task;
 import com.codurance.training.tasks.entity.TaskId;

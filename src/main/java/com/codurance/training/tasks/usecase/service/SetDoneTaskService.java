@@ -30,6 +30,7 @@ public class SetDoneTaskService implements SetDoneUseCase {
         }
 
         toDoList.setDone(id, setDoneInput.done);
+        repository.save(toDoList);
 
     }
 

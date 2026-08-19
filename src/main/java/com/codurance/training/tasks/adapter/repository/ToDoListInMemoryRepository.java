@@ -1,33 +1,32 @@
 package com.codurance.training.tasks.adapter.repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
+import com.codurance.training.tasks.usecase.port.ToDoListMapper;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 
-public class ToDoListInMemoryRepository implements ToDoListRepository{
-    
-    private final List<ToDoList> store;
+public class ToDoListInMemoryRepository implements ToDoListRepository {
 
-    public ToDoListInMemoryRepository() {
-        this.store = new ArrayList<>();
+    private final ToDoListRepositoryPeer toDoListRepositoryPeer;
+
+    public ToDoListInMemoryRepository(ToDoListRepositoryPeer toDoListRepositoryPeer) {
+        this.toDoListRepositoryPeer = toDoListRepositoryPeer;
     }
 
     @Override
     public void save(ToDoList toDoList) {
-        store.add(toDoList);
+        this.toDoListRepositoryPeer.save(ToDoListMapper.toPO(toDoList));
     }
 
     @Override
     public void delete(ToDoList toDoList) {
-        store.removeIf(x -> x.geToDoListId().equals(toDoList.geToDoListId()));
+        this.toDoListRepositoryPeer.delete(ToDoListMapper.toPO(toDoList));
     }
 
     @Override
     public Optional<ToDoList> findById(ToDoListId toDoListId) {
-        return store.stream().filter(x -> x.geToDoListId().equals(toDoListId)).findFirst();
+        return this.toDoListRepositoryPeer.findById(toDoListId.value()).map(ToDoListMapper::toDomain);
     }
 }
