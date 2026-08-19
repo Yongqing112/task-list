@@ -7,11 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codurance.training.tasks.io.springboot.config.UseCaseInjection;
-import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectInput;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController

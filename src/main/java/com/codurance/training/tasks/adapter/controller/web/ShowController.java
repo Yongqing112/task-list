@@ -11,20 +11,16 @@ import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowInput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowOutput;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
-import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @AutoConfigureAfter({ UseCaseInjection.class })
 public class ShowController {
 	private ShowUseCase showUseCase;
-	private ShowPresenter showPresenter;
 
 	@Autowired
-	public ShowController(ShowUseCase showUseCase, ShowPresenter showPresenter) {
+	public ShowController(ShowUseCase showUseCase) {
 		this.showUseCase = showUseCase;
-		this.showPresenter = showPresenter;
 	}
 
 	@GetMapping("/show")
