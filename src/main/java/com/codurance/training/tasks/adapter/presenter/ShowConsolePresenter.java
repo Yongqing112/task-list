@@ -20,12 +20,12 @@ public class ShowConsolePresenter implements ShowPresenter {
         for (ProjectDTO project : toDoListDTO.projectDTOs) {
 
             sb.append(project.projectName);
-            sb.append("\r\n");
+            sb.append(System.lineSeparator());
             for (TaskDTO task : project.taskDTOs) {
                 sb.append(String.format("    [%c] %s: %s%n", (task.done ? 'x' : ' '), task.taskId,
                         task.description));
             }
-            sb.append("\r\n");
+            sb.append(System.lineSeparator());
         }
 
         out.print(sb.toString());

@@ -15,7 +15,7 @@ public class ErrorService implements ErrorUseCase {
     public void execute(ErrorInput input) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("I don't know what the command \"%s\" is.", input.command));
-        sb.append("\r\n");
+        sb.append(System.lineSeparator());
         setMessage(sb.toString());
     }
 

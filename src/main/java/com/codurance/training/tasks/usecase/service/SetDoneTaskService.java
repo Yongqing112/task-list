@@ -25,7 +25,7 @@ public class SetDoneTaskService implements SetDoneUseCase {
         if (!toDoList.containTask(id)) {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("Could not find a task with an ID of %s.", id));
-            sb.append("\r\n");
+            sb.append(System.lineSeparator());
             setMessage(sb.toString());
         }
 
