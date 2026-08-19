@@ -9,6 +9,8 @@ public class TaskPO {
     private String description;
     private Boolean done;
 
+    public TaskPO() {}
+
     public TaskPO(String taskId, String description, Boolean done) {
         this.taskId = taskId;
         this.description = description;
@@ -31,7 +33,7 @@ public class TaskPO {
         this.description = description;
     }
 
-    public Boolean isDone() {
+    public Boolean getDone() {
         return done;
     }
 

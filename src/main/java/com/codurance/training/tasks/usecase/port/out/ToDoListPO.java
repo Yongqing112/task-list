@@ -1,10 +1,10 @@
 package com.codurance.training.tasks.usecase.port.out;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.codurance.training.tasks.entity.Project;
 
 /**
  * ToDoListPo
@@ -12,14 +12,14 @@ import com.codurance.training.tasks.entity.Project;
 public class ToDoListPO {
 
     private String id;
-    private String lastTaskId;
-    private Set<ProjectPO> projects;
+    private Long lastTaskId;
+    private Set<ProjectPO> projectPOs;
 
     public ToDoListPO() {
-        this.projects = new HashSet<>();
+        this.projectPOs = new HashSet<>();
     }
 
-    public ToDoListPO(String id, String lastTaskId) {
+    public ToDoListPO(String id, Long lastTaskId) {
         this();
         this.id = id;
         this.lastTaskId = lastTaskId;
@@ -33,20 +33,20 @@ public class ToDoListPO {
         this.id = id;
     }
 
-    public String getLastTaskId() {
+    public Long getLastTaskId() {
         return lastTaskId;
     }
 
-    public void setLastTaskId(String lastTaskId) {
+    public void setLastTaskId(Long lastTaskId) {
         this.lastTaskId = lastTaskId;
     }
 
-    public Set<ProjectPO> getProjects() {
-        return projects;
+    public List<ProjectPO> getProjectPOs() {
+        return new ArrayList<>(projectPOs);
     }
 
-    public void setProjects(List<ProjectPO> projects) {
-        this.projects = new HashSet<>(projects);
+    public void setProjectPOs(List<ProjectPO> projects) {
+        this.projectPOs = new LinkedHashSet<>(projects);
     }
     
 }

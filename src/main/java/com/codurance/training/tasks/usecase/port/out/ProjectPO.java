@@ -1,8 +1,7 @@
 package com.codurance.training.tasks.usecase.port.out;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * ProjectPO
@@ -11,11 +10,11 @@ public class ProjectPO implements Comparable<ProjectPO>{
 
     private String projectName;
     private int order;
-    private Set<TaskPO> tasks;
+    private List<TaskPO> taskPOs;
 
 
     public ProjectPO() {
-        this.tasks = new HashSet<>();
+        this.taskPOs = new ArrayList<>();
     }
 
     public ProjectPO(String projectName, int order) {
@@ -40,12 +39,12 @@ public class ProjectPO implements Comparable<ProjectPO>{
         this.projectName = projectName;
     }
 
-    public Set<TaskPO> getTasks() {
-        return tasks;
+    public List<TaskPO> getTaskPOs() {
+        return new ArrayList<>(taskPOs);
     }
 
-    public void setTasks(List<TaskPO> tasks) {
-        this.tasks = new HashSet<>(tasks);
+    public void setTaskPOs(List<TaskPO> tasks) {
+        this.taskPOs = new ArrayList<>(tasks);
     }
 
     @Override
