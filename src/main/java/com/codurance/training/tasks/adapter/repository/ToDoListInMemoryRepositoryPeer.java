@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.codurance.training.tasks.usecase.port.out.ToDoListPO;
 
+@Component
 public class ToDoListInMemoryRepositoryPeer implements ToDoListRepositoryPeer {
 
     private final List<ToDoListPO> store;

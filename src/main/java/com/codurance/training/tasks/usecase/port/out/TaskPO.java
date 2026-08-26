@@ -1,12 +1,23 @@
 package com.codurance.training.tasks.usecase.port.out;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  * TaskPO
  */
+@Entity
+@Table(name = "task")
 public class TaskPO {
 
+    @Id
+    @Column(name = "id")
     private String taskId;
+    @Column(name = "description")
     private String description;
+    @Column(name = "done")
     private Boolean done;
 
     public TaskPO() {}

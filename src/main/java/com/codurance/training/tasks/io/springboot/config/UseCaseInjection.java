@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ public class UseCaseInjection {
 	private final ToDoListRepository toDoListRepository;
 
 	@Autowired
-	public UseCaseInjection(ToDoListRepository toDoListRepository) {
+	public UseCaseInjection(@Qualifier("toDoListCrudRepository") ToDoListRepository toDoListRepository) {
 		this.toDoListRepository = toDoListRepository;
 	}
 
