@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Timeout;
 import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
+import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepositoryPeer;
 import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.standard.ToDoListApp;
@@ -50,7 +51,7 @@ public final class ApplicationTest {
     public ApplicationTest() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new PipedInputStream(inStream)));
         PrintWriter out = new PrintWriter(new PipedOutputStream(outStream), true);
-        ToDoListRepository repository = new ToDoListInMemoryRepository();
+        ToDoListRepository repository = new ToDoListInMemoryRepository(new ToDoListInMemoryRepositoryPeer());
         repository.save(new ToDoList(ToDoListId.of(ToDoListApp.DEFAULT_TO_DO_LIST_ID)));
         ShowUseCase showUseCase = new ShowService(repository);
         ShowPresenter showPresenter = new ShowConsolePresenter(out);

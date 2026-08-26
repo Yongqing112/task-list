@@ -8,12 +8,21 @@ public class ToDoList {
 
     private final ToDoListId toDoListId;
     private final List<Project> projects;
-    private long lastId;
+    private long lastTaskId;
 
     public ToDoList(ToDoListId toDoListId) {
+        this(toDoListId, 0);
+    }
+
+    public ToDoList(ToDoListId toDoListId, long lastTaskId) {
         this.toDoListId = toDoListId;
+        this.lastTaskId = lastTaskId;
         this.projects = new ArrayList<>();
-        this.lastId = 0;
+    }
+
+    public ToDoList(ToDoListId toDoListId, long lastTaskId, List<Project> projects) {
+        this(toDoListId, lastTaskId);
+        this.projects.addAll(projects);
     }
 
     public ToDoListId geToDoListId() {
@@ -57,8 +66,12 @@ public class ToDoList {
         return projects.stream().anyMatch(p -> p.getProjectName().equals(projectName));
     }
 
+    public long getLastTaskId() {
+        return lastTaskId;
+    }
+
     private long nextId() {
-        return ++lastId;
+        return ++lastTaskId;
     }
 
     public boolean containTask(TaskId id) {

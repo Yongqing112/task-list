@@ -38,5 +38,6 @@ public class AddTaskService implements AddTaskUseCase {
             return;
         }
         toDoList.addTask(ProjectName.of(addTaskInput.projectName), addTaskInput.description, addTaskInput.done);
+        repository.save(toDoList);
     }
 }

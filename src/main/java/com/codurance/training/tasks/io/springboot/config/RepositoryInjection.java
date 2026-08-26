@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
+import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepositoryPeer;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 
 @PropertySource(value = "classpath:/application.properties")
@@ -13,6 +14,6 @@ public class RepositoryInjection {
 	
 	@Bean(name = "toDoListRepository")
 	public ToDoListRepository toDoListRepository() {
-		return new ToDoListInMemoryRepository();
+		return new ToDoListInMemoryRepository(new ToDoListInMemoryRepositoryPeer());
 	}
 }
