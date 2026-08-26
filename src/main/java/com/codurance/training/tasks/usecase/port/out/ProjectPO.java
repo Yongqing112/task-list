@@ -23,7 +23,7 @@ public class ProjectPO implements Comparable<ProjectPO>{
     @Column(name = "projectName")
     private String projectName;
 
-    @Column(name = "order")
+    @Column(name = "project_order")
     private int order;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)

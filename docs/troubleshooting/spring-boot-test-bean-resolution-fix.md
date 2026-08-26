@@ -106,3 +106,9 @@ public HelpUseCase helpUseCase() {
 ## Related Context
 
 This fix was implemented after adding JPA annotations to PO classes (ProjectPO, TaskPO, ToDoListPO) to enable database persistence. The test configuration needed to be updated to continue using in-memory storage for testing while the production configuration uses JPA/Database storage.
+
+## Related Issues
+After resolving the test environment issues, two additional issues were encountered when running the production Spring Boot application:
+
+1. **Production Environment Bean Conflict** - See [production-bean-conflict-fix.md](./production-bean-conflict-fix.md)
+2. **SQL Reserved Word Conflict** - See [sql-reserved-word-conflict-fix.md](./sql-reserved-word-conflict-fix.md)

@@ -3,6 +3,7 @@ package com.codurance.training.tasks.io.springboot.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 
 import com.codurance.training.tasks.adapter.repository.ToDoListCrudRepository;
@@ -31,6 +32,7 @@ public class RepositoryInjection {
 	}
 
 	@Bean(name = "toDoListCrudRepository")
+	@Primary
 	public ToDoListRepository toDoListCrudRepository() {
 		return new ToDoListCrudRepository(toDoListCrudRepositoryPeer);
 	}
