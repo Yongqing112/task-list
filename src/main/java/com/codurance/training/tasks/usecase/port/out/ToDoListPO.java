@@ -6,13 +6,29 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 /**
  * ToDoListPo
  */
+@Entity
+@Table(name = "toDoList")
 public class ToDoListPO {
 
+    @Id
+    @Column(name = "id")
     private String id;
+    @Column(name = "last_task_id")
     private Long lastTaskId;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "id_fk")
     private Set<ProjectPO> projectPOs;
 
     public ToDoListPO() {
