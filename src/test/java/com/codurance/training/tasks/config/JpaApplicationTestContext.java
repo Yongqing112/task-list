@@ -9,22 +9,25 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 
 import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepository;
-import com.codurance.training.tasks.adapter.repository.ToDoListInMemoryRepositoryPeer;
 import com.codurance.training.tasks.adapter.repository.ToDoListRepositoryPeer;
 import com.codurance.training.tasks.io.springboot.ToDoListSpringBootApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
 import com.codurance.training.tasks.usecase.port.out.ToDoListRepository;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.DeadlineService;
 import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
+import com.codurance.training.tasks.usecase.service.TodayService;
 
 @ComponentScan(basePackages = { "com.codurance.training.tasks" }, excludeFilters = {
 		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ToDoListSpringBootApp.class),
@@ -71,5 +74,15 @@ public abstract class JpaApplicationTestContext {
 	@Bean
 	public HelpUseCase helpUseCase() {
 		return new HelpService();
+	}
+
+	@Bean
+	public DeadlineUseCase deadlineUseCase(ToDoListRepository toDoListRepository) {
+		return new DeadlineService(toDoListRepository);
+	}
+
+	@Bean
+	public TodayUseCase todayUseCase(ToDoListRepository toDoListRepository) {
+		return new TodayService(toDoListRepository);
 	}
 }

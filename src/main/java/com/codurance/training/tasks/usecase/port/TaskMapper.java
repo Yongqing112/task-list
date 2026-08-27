@@ -17,12 +17,13 @@ public class TaskMapper {
         taskDTO.taskId = task.getId().value();
         taskDTO.description = task.getDescription();
         taskDTO.done = task.isDone();
+        taskDTO.deadline = task.getDeadline();
 
         return taskDTO;
     }
 
     public static Task toDomain(TaskPO taskPO) {
-        return new Task(TaskId.of(taskPO.getTaskId()), taskPO.getDescription(), taskPO.getDone());
+        return new Task(TaskId.of(taskPO.getTaskId()), taskPO.getDescription(), taskPO.getDone(), taskPO.getDeadline());
     }
 
     public static List<Task> toDomain(List<TaskPO> tasks) {
@@ -30,7 +31,7 @@ public class TaskMapper {
     }
 
     public static TaskPO toPO(Task task) {
-        return new TaskPO(task.getId().value(), task.getDescription(), task.isDone());
+        return new TaskPO(task.getId().value(), task.getDescription(), task.isDone(), task.getDeadline());
     }
 
     public static List<TaskPO> toPO(List<Task> tasks) {

@@ -2,6 +2,7 @@ package com.codurance.training.tasks.entity;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ToDoList {
@@ -30,7 +31,7 @@ public class ToDoList {
     }
 
     public void addProject(ProjectName projectName) {
-        if(containProject(projectName)) {
+        if (containProject(projectName)) {
             return;
         }
         projects.add(new Project(projectName));
@@ -76,5 +77,24 @@ public class ToDoList {
 
     public boolean containTask(TaskId id) {
         return projects.stream().anyMatch(project -> project.containTask(id));
+    }
+
+    public void setDeadline(TaskId id, LocalDateTime deadline) {
+        if (!containTask(id)) {
+            throw new IllegalStateException("Task Id " + id + "does not exist");
+        }
+
+        getTaskInternal(id).ifPresent(t -> t.setDeadline(deadline));
+    }
+
+    public Optional<Task> getTask(TaskId taskId) {
+        return getTaskInternal(taskId).map(ReadOnlyTask::new);
+    }
+
+    public Optional<Task> getTaskInternal(TaskId id) {
+        return projects.stream()
+                .flatMap(project -> project.getTasks().stream())
+                .filter(task -> task.getId().equals(id))
+                .findFirst();
     }
 }

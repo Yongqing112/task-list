@@ -14,6 +14,7 @@ import com.codurance.training.tasks.adapter.presenter.HelpConsolePresenter;
 import com.codurance.training.tasks.adapter.presenter.ShowConsolePresenter;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
@@ -23,6 +24,7 @@ import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.DeadlineService;
 import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
@@ -91,5 +93,10 @@ public class UseCaseInjection {
 	@Bean
 	public ShowPresenter showPresenter() {
 		return new ShowConsolePresenter(getOut());
+	}
+
+	@Bean
+	public DeadlineUseCase deadlineUseCase() {
+		return new DeadlineService(toDoListRepository);
 	}
 }

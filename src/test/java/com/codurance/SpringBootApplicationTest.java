@@ -24,7 +24,9 @@ import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
@@ -45,6 +47,8 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 	private final AddTaskUseCase addTaskUseCase;
 	private final SetDoneUseCase setDoneUseCase;
 	private final HelpUseCase helpUseCase;
+	private final DeadlineUseCase deadlineUseCase;
+	private final TodayUseCase todayUseCase;
 	private final ErrorUseCase errorUseCase;
 
 	@Autowired
@@ -55,6 +59,8 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 			AddTaskUseCase addTaskUseCase,
 			SetDoneUseCase setDoneUseCase,
 			HelpUseCase helpUseCase,
+			DeadlineUseCase deadlineUseCase,
+			TodayUseCase todayUseCase,
 			ErrorUseCase errorUseCase) {
 
 		this.showUseCase = showUseCase;
@@ -62,6 +68,8 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 		this.addTaskUseCase = addTaskUseCase;
 		this.setDoneUseCase = setDoneUseCase;
 		this.helpUseCase = helpUseCase;
+		this.deadlineUseCase = deadlineUseCase;
+		this.todayUseCase = todayUseCase;
 		this.errorUseCase = errorUseCase;
 		repository.save(new ToDoList(ToDoListId.of(ToDoListApp.DEFAULT_TO_DO_LIST_ID)));
 	}
@@ -82,6 +90,8 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 				setDoneUseCase,
 				helpUseCase,
 				helpPresenter,
+				deadlineUseCase,
+				todayUseCase,
 				errorUseCase);
 		applicationThread = new Thread(toDoListApp);
 		applicationThread.start();
@@ -144,6 +154,34 @@ public class SpringBootApplicationTest extends SpringBootTestContextProvider {
 				"    [x] 6: Primitive Obsession",
 				"    [ ] 7: Outside-In TDD",
 				"    [ ] 8: Interaction-Driven Design",
+				"");
+
+		execute("deadline 1 2026-08-03");
+		execute("deadline 3 2026-08-04");
+		execute("deadline 4 2026-08-03");
+
+		execute("show");
+		readLines(
+				"secrets",
+				"    [x] 1: Eat more donuts. 2026-08-03",
+				"    [ ] 2: Destroy all humans.",
+				"",
+				"training",
+				"    [x] 3: Four Elements of Simple Design 2026-08-04",
+				"    [ ] 4: SOLID 2026-08-03",
+				"    [x] 5: Coupling and Cohesion",
+				"    [x] 6: Primitive Obsession",
+				"    [ ] 7: Outside-In TDD",
+				"    [ ] 8: Interaction-Driven Design",
+				"");
+
+		execute("today 2026-08-03");
+		readLines(
+				"secrets",
+				"    [x] 1: Eat more donuts. 2026-08-03",
+				"",
+				"training",
+				"    [ ] 4: SOLID 2026-08-03",
 				"");
 
 		// Added by Teddy to verify error handling messages

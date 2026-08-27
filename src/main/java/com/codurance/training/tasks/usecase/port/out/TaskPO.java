@@ -1,5 +1,7 @@
 package com.codurance.training.tasks.usecase.port.out;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,13 +21,21 @@ public class TaskPO {
     private String description;
     @Column(name = "done")
     private Boolean done;
+    @Column(name = "deadline")
+    private LocalDateTime deadline;
 
-    public TaskPO() {}
+    public TaskPO() {
+    }
 
     public TaskPO(String taskId, String description, Boolean done) {
+        this(taskId, description, done, null);
+    }
+
+    public TaskPO(String taskId, String description, Boolean done, LocalDateTime deadline) {
         this.taskId = taskId;
         this.description = description;
         this.done = done;
+        this.deadline = deadline;
     }
 
     public String getTaskId() {
@@ -52,6 +62,11 @@ public class TaskPO {
         this.done = done;
     }
 
-    
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
 
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
 }

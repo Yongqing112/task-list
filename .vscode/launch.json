@@ -2,6 +2,13 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "ToDoListApp",
+			"request": "launch",
+			"mainClass": "com.codurance.training.tasks.io.standard.ToDoListApp",
+			"projectName": "tasks"
+		},
+		{
+			"type": "java",
 			"name": "Spring Boot-ToDoListSpringBootApp<tasks>",
 			"request": "launch",
 			"cwd": "${workspaceFolder}",
