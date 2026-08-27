@@ -22,6 +22,7 @@ import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCas
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
@@ -35,6 +36,7 @@ import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
+import com.codurance.training.tasks.usecase.service.TodayService;
 
 import static java.lang.System.lineSeparator;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,6 +65,7 @@ public final class ApplicationTest {
         HelpUseCase helpUseCase = new HelpService();
         HelpPresenter helpPresenter = new HelpConsolePresenter(out);
         DeadlineUseCase deadlineUseCase = new DeadlineService(repository);
+        TodayUseCase todayUseCase = new TodayService(repository);
         ErrorUseCase errorUseCase = new ErrorService();
         ToDoListApp toDoListApp = new ToDoListApp(
                 in,
@@ -75,6 +78,7 @@ public final class ApplicationTest {
                 helpUseCase,
                 helpPresenter,
                 deadlineUseCase,
+                todayUseCase,
                 errorUseCase);
         applicationThread = new Thread(toDoListApp);
     }
@@ -144,6 +148,8 @@ public final class ApplicationTest {
                 "");
 
         execute("deadline 1 2026-08-03");
+        execute("deadline 3 2026-08-04");
+        execute("deadline 4 2026-08-03");
 
         execute("show");
         readLines(
@@ -152,12 +158,21 @@ public final class ApplicationTest {
                 "    [ ] 2: Destroy all humans.",
                 "",
                 "training",
-                "    [x] 3: Four Elements of Simple Design",
-                "    [ ] 4: SOLID",
+                "    [x] 3: Four Elements of Simple Design 2026-08-04",
+                "    [ ] 4: SOLID 2026-08-03",
                 "    [x] 5: Coupling and Cohesion",
                 "    [x] 6: Primitive Obsession",
                 "    [ ] 7: Outside-In TDD",
                 "    [ ] 8: Interaction-Driven Design",
+                "");
+
+        execute("today 2026-08-03");
+        readLines(
+                "secrets",
+                "    [x] 1: Eat more donuts. 2026-08-03",
+                "",
+                "training",
+                "    [ ] 4: SOLID 2026-08-03",
                 "");
 
         // Added by Teddy to verify error handling messages

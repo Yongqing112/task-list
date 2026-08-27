@@ -15,6 +15,7 @@ import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCas
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.show.ShowUseCase;
@@ -26,6 +27,7 @@ import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
 import com.codurance.training.tasks.usecase.service.ShowService;
+import com.codurance.training.tasks.usecase.service.TodayService;
 
 @ComponentScan(basePackages = { "com.codurance.training.tasks" }, excludeFilters = {
 		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ToDoListSpringBootApp.class),
@@ -77,5 +79,10 @@ public abstract class JpaApplicationTestContext {
 	@Bean
 	public DeadlineUseCase deadlineUseCase(ToDoListRepository toDoListRepository) {
 		return new DeadlineService(toDoListRepository);
+	}
+
+	@Bean
+	public TodayUseCase todayUseCase(ToDoListRepository toDoListRepository) {
+		return new TodayService(toDoListRepository);
 	}
 }

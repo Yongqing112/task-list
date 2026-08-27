@@ -13,6 +13,9 @@ import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineInput;
 import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneInput;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayInput;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayOutput;
+import com.codurance.training.tasks.usecase.port.in.task.today.TodayUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorInput;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpOutput;
@@ -33,6 +36,7 @@ public class ToDoListConsoleController {
     private final HelpUseCase helpUseCase;
     private final HelpPresenter helpPresenter;
     private final DeadlineUseCase deadlineUseCase;
+    private final TodayUseCase todayUseCase;
     private final ErrorUseCase errorUseCase;
 
     public ToDoListConsoleController(PrintWriter out,
@@ -44,6 +48,7 @@ public class ToDoListConsoleController {
             HelpUseCase helpUseCase,
             HelpPresenter helpPresenter,
             DeadlineUseCase deadlineUseCase,
+            TodayUseCase todayUseCase,
             ErrorUseCase errorUseCase) {
         this.out = out;
         this.showUseCase = showUseCase;
@@ -54,6 +59,7 @@ public class ToDoListConsoleController {
         this.helpUseCase = helpUseCase;
         this.helpPresenter = helpPresenter;
         this.deadlineUseCase = deadlineUseCase;
+        this.todayUseCase = todayUseCase;
         this.errorUseCase = errorUseCase;
     }
 
@@ -78,6 +84,9 @@ public class ToDoListConsoleController {
                 break;
             case "deadline":
                 deadline(commandRest[1]);
+                break;
+            case "today":
+                today(commandRest[1]);
                 break;
             default:
                 error(command);
@@ -137,6 +146,16 @@ public class ToDoListConsoleController {
         deadlineInput.deadline = LocalDateTime.parse(dateTimeString, formatter);
         deadlineUseCase.execute(deadlineInput);
         out.print(deadlineUseCase.getMessage());
+    }
+
+    private void today(String commandLine) {
+        TodayInput input = new TodayInput();
+        input.toDoListId = ToDoListApp.DEFAULT_TO_DO_LIST_ID;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String dateTimeString = commandLine + " 00:00:00";
+        input.today = LocalDateTime.parse(dateTimeString, formatter);
+        TodayOutput output = todayUseCase.execute(input);
+        showPresenter.present(output.toDoListDTO);
     }
 
     private void error(String command) {
