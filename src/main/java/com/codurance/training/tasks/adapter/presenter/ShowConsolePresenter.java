@@ -22,8 +22,15 @@ public class ShowConsolePresenter implements ShowPresenter {
             sb.append(project.projectName);
             sb.append(System.lineSeparator());
             for (TaskDTO task : project.taskDTOs) {
-                sb.append(String.format("    [%c] %s: %s%n", (task.done ? 'x' : ' '), task.taskId,
-                        task.description));
+
+                if (null != task.deadline) {
+                    sb.append(String.format("    [%c] %s: %s %s%n", (task.done ? 'x' : ' '), task.taskId,
+                            task.description, task.deadline.toLocalDate().toString()));
+                } else {
+                    sb.append(
+                            String.format("    [%c] %s: %s%n", (task.done ? 'x' : ' '), task.taskId, task.description));
+                }
+
             }
             sb.append(System.lineSeparator());
         }

@@ -20,6 +20,7 @@ import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.springboot.config.UseCaseInjection;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
@@ -47,6 +48,7 @@ public class ToDoListSpringBootApp extends SpringBootServletInitializer implemen
 	private final SetDoneUseCase setDoneUseCase;
 	private final HelpUseCase helpUseCase;
 	private final HelpPresenter helpPresenter;
+	private final DeadlineUseCase deadlineUseCase;
 	private final ErrorUseCase errorUseCase;
 
 	public static void main(String[] args) {
@@ -64,6 +66,7 @@ public class ToDoListSpringBootApp extends SpringBootServletInitializer implemen
 			SetDoneUseCase setDoneUseCase,
 			HelpUseCase helpUseCase,
 			@Qualifier("consoleHelp") HelpPresenter helpPresenter,
+			DeadlineUseCase deadlineUseCase,
 			ErrorUseCase errorUseCase) {
 		this.in = reader;
 		this.out = writer;
@@ -74,6 +77,7 @@ public class ToDoListSpringBootApp extends SpringBootServletInitializer implemen
 		this.setDoneUseCase = setDoneUseCase;
 		this.helpUseCase = helpUseCase;
 		this.helpPresenter = helpPresenter;
+		this.deadlineUseCase = deadlineUseCase;
 		this.errorUseCase = errorUseCase;
 		repository.save(new ToDoList(ToDoListId.of(DEFAULT_TO_DO_LIST_ID)));
 	}
@@ -104,6 +108,7 @@ public class ToDoListSpringBootApp extends SpringBootServletInitializer implemen
 					setDoneUseCase,
 					helpUseCase,
 					helpPresenter,
+					deadlineUseCase,
 					errorUseCase).execute(command);
 		}
 	}

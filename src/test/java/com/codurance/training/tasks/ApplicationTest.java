@@ -20,6 +20,7 @@ import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.io.standard.ToDoListApp;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
@@ -29,6 +30,7 @@ import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.DeadlineService;
 import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
@@ -60,6 +62,7 @@ public final class ApplicationTest {
         SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
         HelpUseCase helpUseCase = new HelpService();
         HelpPresenter helpPresenter = new HelpConsolePresenter(out);
+        DeadlineUseCase deadlineUseCase = new DeadlineService(repository);
         ErrorUseCase errorUseCase = new ErrorService();
         ToDoListApp toDoListApp = new ToDoListApp(
                 in,
@@ -71,6 +74,7 @@ public final class ApplicationTest {
                 setDoneUseCase,
                 helpUseCase,
                 helpPresenter,
+                deadlineUseCase,
                 errorUseCase);
         applicationThread = new Thread(toDoListApp);
     }
@@ -128,6 +132,23 @@ public final class ApplicationTest {
         readLines(
                 "secrets",
                 "    [x] 1: Eat more donuts.",
+                "    [ ] 2: Destroy all humans.",
+                "",
+                "training",
+                "    [x] 3: Four Elements of Simple Design",
+                "    [ ] 4: SOLID",
+                "    [x] 5: Coupling and Cohesion",
+                "    [x] 6: Primitive Obsession",
+                "    [ ] 7: Outside-In TDD",
+                "    [ ] 8: Interaction-Driven Design",
+                "");
+
+        execute("deadline 1 2026-08-03");
+
+        execute("show");
+        readLines(
+                "secrets",
+                "    [x] 1: Eat more donuts. 2026-08-03",
                 "    [ ] 2: Destroy all humans.",
                 "",
                 "training",

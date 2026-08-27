@@ -14,6 +14,7 @@ import com.codurance.training.tasks.entity.ToDoList;
 import com.codurance.training.tasks.entity.ToDoListId;
 import com.codurance.training.tasks.usecase.port.in.project.add.AddProjectUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.add.AddTaskUseCase;
+import com.codurance.training.tasks.usecase.port.in.task.deadline.DeadlineUseCase;
 import com.codurance.training.tasks.usecase.port.in.task.setDone.SetDoneUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.error.ErrorUseCase;
 import com.codurance.training.tasks.usecase.port.in.todolist.help.HelpUseCase;
@@ -23,6 +24,7 @@ import com.codurance.training.tasks.usecase.port.out.todolist.help.HelpPresenter
 import com.codurance.training.tasks.usecase.port.out.todolist.show.ShowPresenter;
 import com.codurance.training.tasks.usecase.service.AddProjectService;
 import com.codurance.training.tasks.usecase.service.AddTaskService;
+import com.codurance.training.tasks.usecase.service.DeadlineService;
 import com.codurance.training.tasks.usecase.service.ErrorService;
 import com.codurance.training.tasks.usecase.service.HelpService;
 import com.codurance.training.tasks.usecase.service.SetDoneTaskService;
@@ -40,6 +42,7 @@ public final class ToDoListApp implements Runnable {
     private final SetDoneUseCase setDoneUseCase;
     private final HelpUseCase helpUseCase;
     private final HelpPresenter helpPresenter;
+    private final DeadlineUseCase deadlineUseCase;
     private final ErrorUseCase errorUseCase;
 
     public static final String DEFAULT_TO_DO_LIST_ID = "001";
@@ -56,6 +59,7 @@ public final class ToDoListApp implements Runnable {
         SetDoneUseCase setDoneUseCase = new SetDoneTaskService(repository);
         HelpUseCase helpUseCase = new HelpService();
         HelpPresenter helpPresenter = new HelpConsolePresenter(out);
+        DeadlineUseCase deadlineUseCase = new DeadlineService(repository);
         ErrorUseCase errorUseCase = new ErrorService();
         new ToDoListApp(
                 in,
@@ -67,6 +71,7 @@ public final class ToDoListApp implements Runnable {
                 setDoneUseCase,
                 helpUseCase,
                 helpPresenter,
+                deadlineUseCase,
                 errorUseCase).run();
     }
 
@@ -80,6 +85,7 @@ public final class ToDoListApp implements Runnable {
             SetDoneUseCase setDoneUseCase,
             HelpUseCase helpUseCase,
             HelpPresenter helpPresenter,
+            DeadlineUseCase deadlineUseCase,
             ErrorUseCase errorUseCase) {
         this.in = reader;
         this.out = writer;
@@ -90,6 +96,7 @@ public final class ToDoListApp implements Runnable {
         this.setDoneUseCase = setDoneUseCase;
         this.helpUseCase = helpUseCase;
         this.helpPresenter = helpPresenter;
+        this.deadlineUseCase = deadlineUseCase;
         this.errorUseCase = errorUseCase;
     }
 
@@ -114,6 +121,7 @@ public final class ToDoListApp implements Runnable {
                     setDoneUseCase,
                     helpUseCase,
                     helpPresenter,
+                    deadlineUseCase,
                     errorUseCase).execute(command);
         }
     }
